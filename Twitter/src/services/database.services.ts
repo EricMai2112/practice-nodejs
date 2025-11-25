@@ -2,8 +2,7 @@ import { config } from 'dotenv'
 import { MongoClient } from 'mongodb'
 
 config()
-console.log(process.env.USERNAME)
-const uri = `mongodb+srv://${process.env.USERNAME}:${process.env.DB_PASSWORD}@cluster0.dvz1yko.mongodb.net/?appName=Cluster0`
+const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.dvz1yko.mongodb.net/?appName=Cluster0`
 
 class DatabaseService {
   private client: MongoClient
