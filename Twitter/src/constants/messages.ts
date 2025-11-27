@@ -6,7 +6,7 @@ export const USERS_MESSAGES = {
   NAME_LENGTH_MUST_BE_1_TO_100: 'Name length must be 1 to 100',
   EMAIL_IS_REQUIRED: 'Email is required',
   EMAIL_IS_INVALID: 'Email is invalid',
-  USER_NOT_FOUND: 'User not found',
+  EMAIL_OR_PASSWORD_IS_INCORRECT: 'Email or password is incorrect',
   PASSWORD_IS_REQUIRED: 'Password is required',
   PASSWORD_MUST_BE_A_STRING: 'Password must be a string',
   PASSWORD_LENGTH_MUST_BE_FROM_6_TO_50: 'Password length must be from 6 to 50',
