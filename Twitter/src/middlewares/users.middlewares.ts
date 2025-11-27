@@ -1,5 +1,7 @@
 import { checkSchema } from 'express-validator'
+import httpStatus from '~/constants/httpStatus'
 import { USERS_MESSAGES } from '~/constants/messages'
+import { ErrorWithStatus } from '~/models/Errors'
 import databaseService from '~/services/database.services'
 import { usersService } from '~/services/users.services'
 import { hashPassword } from '~/utils/crypto'
@@ -167,9 +169,12 @@ export const accessTokenValidator = validate(
         },
         custom: {
           options: async (value: string, { req }) => {
-            const access_token = value.replace('Bearer', '')
-            if (access_token == '') {
-              throw Error(USERS_MESSAGES.ACCESS_TOKEN_IS_REQUIRED)
+            const access_token = value.split(' ')[1]
+            if (!access_token) {
+              throw new ErrorWithStatus({
+                message: USERS_MESSAGES.ACCESS_TOKEN_IS_REQUIRED,
+                status: httpStatus.UNAUTHORIZED
+              })
             }
             const decoded_authorization = await verifyToken({ token: access_token })
             req.decoded_authorization = decoded_authorization
