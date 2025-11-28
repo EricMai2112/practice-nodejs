@@ -1,17 +1,21 @@
 import { Router } from 'express'
 import {
   emailVerifyController,
+  fotgotPasswordController,
   loginController,
   logoutController,
   registerController,
-  resendEmailVerifyController
+  resendEmailVerifyController,
+  verifyFotgotPasswordController
 } from '~/controllers/users.controllers'
 import {
   accessTokenValidator,
   emailVerifyTokenValidator,
+  forgotPasswordValidator,
   loginValidator,
   refreshTokenValidator,
-  registerValidator
+  registerValidator,
+  verifyForgotPasswordTokenValidator
 } from '~/middlewares/users.middlewares'
 import { wrapRequestHandler } from '~/utils/handlers'
 
@@ -43,4 +47,16 @@ usersRouter.post('/verify-email', emailVerifyTokenValidator, wrapRequestHandler(
  * Body: {}
  */
 usersRouter.post('/resend-verify-email', accessTokenValidator, wrapRequestHandler(resendEmailVerifyController))
+
+/**
+ * description: Submit email to reset password, send email to user
+ * Body: {email: string}
+ */
+usersRouter.post('/forgot-password', forgotPasswordValidator, wrapRequestHandler(fotgotPasswordController))
+
+/**
+ * description: Verify link in email to reset password
+ * Body: {forgot_password_token: string}
+ */
+usersRouter.post('/verify-forgot-password', verifyForgotPasswordTokenValidator, wrapRequestHandler(verifyFotgotPasswordController))
 export default usersRouter
