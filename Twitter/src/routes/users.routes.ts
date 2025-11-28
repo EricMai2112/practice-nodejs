@@ -1,6 +1,11 @@
 import { Router } from 'express'
-import { loginController, registerController } from '~/controllers/users.controllers'
-import { accessTokenValidator, loginValidator, registerValidator } from '~/middlewares/users.middlewares'
+import { loginController, logoutController, registerController } from '~/controllers/users.controllers'
+import {
+  accessTokenValidator,
+  loginValidator,
+  refreshTokenValidator,
+  registerValidator
+} from '~/middlewares/users.middlewares'
 import { wrapRequestHandler } from '~/utils/handlers'
 
 const usersRouter = Router()
@@ -16,14 +21,13 @@ usersRouter.post('/register', registerValidator, wrapRequestHandler(registerCont
  * header: { Authorization: Bearer <access_token> }
  * Body: { refresh_token: string }
  */
-usersRouter.post(
-  '/logout',
-  accessTokenValidator,
-  wrapRequestHandler((req, res) => {
-    res.json({
-      message: 'Logout successfully'
-    })
-  })
-)
+usersRouter.post('/logout', accessTokenValidator, refreshTokenValidator, wrapRequestHandler(logoutController))
+
+/**
+ * description: verify email when user click on the link in email
+ * header: { Authorization: Bearer <access_token> }
+ * Body: { email_verify_token: string }
+ */
+usersRouter.post('/verify-email', refreshTokenValidator, wrapRequestHandler(logoutController))
 
 export default usersRouter

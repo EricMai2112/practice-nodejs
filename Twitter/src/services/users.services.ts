@@ -5,6 +5,7 @@ import { hashPassword } from '~/utils/crypto'
 import { signToken } from '~/utils/jwt'
 import { TokenType } from '~/constants/enums'
 import RefreshToken from '~/models/schemas/RefreshToken.schema'
+import { USERS_MESSAGES } from '~/constants/messages'
 
 class UsersService {
   private signAccessToken(user_id: string) {
@@ -57,6 +58,13 @@ class UsersService {
     const [access_token, refresh_token] = await this.signAccessAndRefreshToken(user_id)
     await databaseService.refreshTokens.insertOne(new RefreshToken({ user_id, token: refresh_token }))
     return { access_token, refresh_token }
+  }
+
+  async logout(refresh_token: string) {
+    await databaseService.refreshTokens.deleteOne({ token: refresh_token })
+    return {
+      message: USERS_MESSAGES.LOG_OUT_SUCCESS
+    }
   }
 }
 
