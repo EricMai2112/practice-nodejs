@@ -4,14 +4,14 @@ interface RefreshTokenType {
   _id?: ObjectId
   token: string
   created_at?: Date
-  user_id: string
+  user_id: ObjectId
 }
 
 export default class RefreshToken {
   _id?: ObjectId
   token: string
   created_at: Date
-  user_id: string
+  user_id: ObjectId
 
   constructor({ _id, token, created_at, user_id }: RefreshTokenType) {
     this._id = _id
