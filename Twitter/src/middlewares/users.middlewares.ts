@@ -116,11 +116,11 @@ const forgotPasswordTokenSchema: ParamSchema = {
 }
 
 const imageSchema: ParamSchema = {
-  trim: true,
   optional: true,
   isString: {
     errorMessage: USERS_MESSAGES.IMAGE_MUST_BE_A_STRING
   },
+  trim: true,
   isLength: {
     options: {
       min: 1,
@@ -137,14 +137,14 @@ const nameSchema: ParamSchema = {
   isString: {
     errorMessage: USERS_MESSAGES.NAME_MUST_BE_A_STRING
   },
+  trim: true,
   isLength: {
     options: {
       min: 1,
       max: 100
     },
     errorMessage: USERS_MESSAGES.NAME_LENGTH_MUST_BE_1_TO_100
-  },
-  trim: true
+  }
 }
 
 const dateOfBirthSchema: ParamSchema = {
@@ -426,11 +426,11 @@ export const updateMeValidator = validate(
         optional: true
       },
       bio: {
-        trim: true,
         optional: true,
         isString: {
           errorMessage: USERS_MESSAGES.BIO_MUST_BE_A_STRING
         },
+        trim: true,
         isLength: {
           options: {
             min: 1,
@@ -440,11 +440,11 @@ export const updateMeValidator = validate(
         }
       },
       location: {
-        trim: true,
         optional: true,
         isString: {
           errorMessage: USERS_MESSAGES.LOCATION_MUST_BE_A_STRING
         },
+        trim: true,
         isLength: {
           options: {
             min: 1,
@@ -454,11 +454,11 @@ export const updateMeValidator = validate(
         }
       },
       website: {
-        trim: true,
         optional: true,
         isString: {
           errorMessage: USERS_MESSAGES.WEBSITE_MUST_BE_A_STRING
         },
+        trim: true,
         isLength: {
           options: {
             min: 1,
@@ -468,11 +468,11 @@ export const updateMeValidator = validate(
         }
       },
       username: {
-        trim: true,
         optional: true,
         isString: {
           errorMessage: USERS_MESSAGES.USERNAME_MUST_BE_A_STRING
         },
+        trim: true,
         isLength: {
           options: {
             min: 1,
@@ -482,8 +482,7 @@ export const updateMeValidator = validate(
         }
       },
       avatar: imageSchema,
-      cover_photo: imageSchema,
-      
+      cover_photo: imageSchema
     },
     ['body']
   )
