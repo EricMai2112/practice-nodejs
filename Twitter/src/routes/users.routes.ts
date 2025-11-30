@@ -19,6 +19,7 @@ import {
   refreshTokenValidator,
   registerValidator,
   resetPasswordValidator,
+  updateMeValidator,
   verifiedUserValidator,
   verifyForgotPasswordTokenValidator
 } from '~/middlewares/users.middlewares'
@@ -86,5 +87,11 @@ usersRouter.get('/me', accessTokenValidator, wrapRequestHandler(getMeController)
  * header: { Authorization: Bearer <access_token> }
  * body: UserSchema
  */
-usersRouter.patch('/me', accessTokenValidator, verifiedUserValidator, wrapRequestHandler(updateMeController))
+usersRouter.patch(
+  '/me',
+  accessTokenValidator,
+  verifiedUserValidator,
+  updateMeValidator,
+  wrapRequestHandler(updateMeController)
+)
 export default usersRouter
