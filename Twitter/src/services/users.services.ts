@@ -241,20 +241,21 @@ class UsersService {
     })
 
     if (follower == null) {
-      await databaseService.followers.insertOne(
-        new Follower({
-          user_id: new ObjectId(user_id),
-          followed_user_id: new ObjectId(followed_user_id)
-        })
-      )
       return {
-        message: USERS_MESSAGES.FOLLOW_SUCCESS
+        message: USERS_MESSAGES.ALREADY_UNFOLLOWED
       }
     }
+
+    await databaseService.followers.deleteOne({
+      user_id: new ObjectId(user_id),
+      followed_user_id: new ObjectId(followed_user_id)
+    })
     return {
-      message: USERS_MESSAGES.FOLLOWED
+      message: USERS_MESSAGES.UNFOLLOW_SUCCESS
     }
   }
+
+  async unFollow(user_id: string, followed_user_id: string) {}
 }
 
 export const usersService = new UsersService()
