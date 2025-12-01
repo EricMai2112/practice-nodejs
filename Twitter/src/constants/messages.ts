@@ -49,5 +49,8 @@ export const USERS_MESSAGES = {
   IMAGE_MUST_BE_A_STRING: 'Avatar must be a string',
   IMAGE_LENGTH_MUST_BE_1_TO_200: 'Avatar length must be 1 to 400',
   UPDATE_ME_SUCCESSFULLY: 'Update me successfully',
-  GET_PROFILE_SUCCESS: 'Get profile successfully'
+  GET_PROFILE_SUCCESS: 'Get profile successfully',
+  FOLLOW_SUCCESS: 'Follow successffully',
+  INVALID_FOLLOWED_USER_ID: 'Invalid followed user id',
+  FOLLOWED: 'Followed'
 } as const
