@@ -8,6 +8,7 @@ import {
   getProfileController,
   loginController,
   logoutController,
+  oauthController,
   registerController,
   resendEmailVerifyController,
   resetPasswordController,
@@ -37,6 +38,13 @@ import { wrapRequestHandler } from '~/utils/handlers'
 const usersRouter = Router()
 
 usersRouter.post('/login', loginValidator, wrapRequestHandler(loginController))
+
+/**
+ * description: Login/Register by using OAuth 2.0
+ * method: GET
+ * query: {code: string}
+ */
+usersRouter.get('/oauth/google', wrapRequestHandler(oauthController))
 
 /**
  * Body: {name: string, email: string, password: string, confirm_password: string, date_of_birth: ISO8601}

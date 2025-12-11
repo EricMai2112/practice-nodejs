@@ -29,8 +29,15 @@ export const loginController = async (req: Request<ParamsDictionary, any, LoginR
   const user_id = user._id as ObjectId
   const result = await usersService.login({ user_id: user_id.toString(), verify: user.verify })
   return res.json({
-    message: USERS_MESSAGES.LOGIN_SUCCESS,
-    result
+    message: USERS_MESSAGES.LOGIN_SUCCESS
+  })
+}
+
+export const oauthController = async (req: Request, res: Response) => {
+  const {code} = req.query
+  usersService.oauth(code as string)
+  return res.json({
+    message: USERS_MESSAGES.LOGIN_SUCCESS
   })
 }
 
