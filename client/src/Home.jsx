@@ -26,6 +26,13 @@ const getGoogleAuthUrl = () => {
 const googleOauthUrl = getGoogleAuthUrl();
 
 export default function Home() {
+  const isAuthenticated = Boolean(localStorage.getItem("access_token"));
+  const logout = () => {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    window.location.reload();
+  };
+
   return (
     <>
       <div>
@@ -38,7 +45,14 @@ export default function Home() {
       </div>
       <h1>Google OAuth 2.0</h1>
       <div className="card"></div>
-      <Link to={googleOauthUrl}>Login with Google</Link>
+      {isAuthenticated ? (
+        <div>
+          <span>"Logged in"</span>
+          <button onClick={logout}>Log out</button>
+        </div>
+      ) : (
+        <Link to={googleOauthUrl}>Login with Google</Link>
+      )}
     </>
   );
 }
