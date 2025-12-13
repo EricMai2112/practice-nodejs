@@ -2,6 +2,7 @@ import express from 'express'
 import usersRouter from './routes/users.routes'
 import databaseService from './services/database.services'
 import { defaultErrorHandler } from './middlewares/error.middlewares'
+import mediasRouter from './routes/media.routes'
 
 const app = express()
 const PORT = 4000
@@ -14,6 +15,7 @@ app.get('/', (req, res) => {
 //middleware
 app.use(express.json())
 app.use('/users', usersRouter)
+app.use('/medias', mediasRouter)
 
 //Error Handler cho toàn app
 app.use(defaultErrorHandler)
