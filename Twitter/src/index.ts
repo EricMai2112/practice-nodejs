@@ -5,6 +5,7 @@ import { defaultErrorHandler } from './middlewares/error.middlewares'
 import mediasRouter from './routes/media.routes'
 import { initFolder } from './utils/file'
 import { config } from 'dotenv'
+import { UPLOAD_DIR } from './constants/dir'
 
 config()
 
@@ -19,12 +20,11 @@ app.get('/', (req, res) => {
 
 //Tạo folder uploads file nếu chưa có
 initFolder()
-
 //middleware
 app.use(express.json())
 app.use('/users', usersRouter)
 app.use('/medias', mediasRouter)
-
+app.use('/static', express.static(UPLOAD_DIR))
 //Error Handler cho toàn app
 app.use(defaultErrorHandler)
 
