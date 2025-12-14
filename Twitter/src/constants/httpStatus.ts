@@ -10,7 +10,8 @@ const httpStatus = {
   NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,
   USER_NOT_FOUND: 404,
-  BAD_REQUEST: 400
+  BAD_REQUEST: 400,
+  PARTIAL_CONTENT: 206
 } as const
 
 export default httpStatus
