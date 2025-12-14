@@ -22,14 +22,14 @@ import { USERS_MESSAGES } from '~/constants/messages'
 import databaseService from '~/services/database.services'
 import httpStatus from '~/constants/httpStatus'
 import { UserVerifyStatus } from '~/constants/enums'
-import { pick } from 'lodash'
 
 export const loginController = async (req: Request<ParamsDictionary, any, LoginReqBody>, res: Response) => {
   const user = req.user as User
   const user_id = user._id as ObjectId
   const result = await usersService.login({ user_id: user_id.toString(), verify: user.verify })
   return res.json({
-    message: USERS_MESSAGES.LOGIN_SUCCESS
+    message: USERS_MESSAGES.LOGIN_SUCCESS,
+    result
   })
 }
 
