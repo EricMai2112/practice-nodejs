@@ -52,7 +52,7 @@ export const serveVideoStreamController = (req: Request, res: Response, next: Ne
   //Lấy giá trị byte kết thúc từ header range, vượt quá dung lượng video thì lấy giá trị videoSize
   const end = Math.min(start + chunkSize, videoSize - 1)
 
-  const contentLength = end - start
+  const contentLength = end - start + 1
   const contentType = mime.getType(videoPath) || 'video/*'
   const headers = {
     'Content-Range': `bytes ${start}-${end}/${videoSize}`,
