@@ -1,7 +1,8 @@
 import { Request } from 'express'
 import formidable, { File } from 'formidable'
-import fs from 'fs'
+import fs, { mkdirSync } from 'fs'
 import { UPLOAD_IMAGE_TEMP_DIR, UPLOAD_VIDEO_DIR, UPLOAD_VIDEO_TEMP_DIR } from '~/constants/dir'
+import path from 'path'
 
 export const initFolder = () => {
   ;[UPLOAD_IMAGE_TEMP_DIR, UPLOAD_VIDEO_TEMP_DIR].forEach((dir) => {
@@ -45,8 +46,12 @@ export const handleUploadImage = async (req: Request) => {
 
 export const handleUploadVideo = async (req: Request) => {
   const formidable = (await import('formidable')).default
+  const nanoid = (await import('nanoid')).nanoid
+  const idName = nanoid()
+  const folderPath = path.resolve(UPLOAD_VIDEO_DIR, idName)
+  fs.mkdirSync(folderPath)
   const form = formidable({
-    uploadDir: UPLOAD_VIDEO_DIR,
+    uploadDir: folderPath,
     maxFiles: 1,
     maxFileSize: 50 * 1024 * 1024, // 50MB,
     filter: function ({ name, originalFilename, mimetype }) {
@@ -56,6 +61,9 @@ export const handleUploadVideo = async (req: Request) => {
       }
 
       return valid
+    },
+    filename: function () {
+      return idName
     }
   })
 
@@ -72,6 +80,7 @@ export const handleUploadVideo = async (req: Request) => {
         const ext = getExtension(video.originalFilename as string)
         fs.renameSync(video.filepath, video.filepath + '.' + ext)
         video.newFilename = video.newFilename + '.' + ext
+        video.filepath = video.filepath + '.' + ext
       })
       resolve(files.video as File[])
     })
