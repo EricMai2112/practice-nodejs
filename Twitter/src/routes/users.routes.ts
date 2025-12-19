@@ -62,7 +62,12 @@ usersRouter.post('/logout', refreshTokenValidator, wrapRequestHandler(refreshTok
  * description: Refresh Token
  * Body: { refresh_token: string }
  */
-usersRouter.post('/refresh-token', accessTokenValidator, refreshTokenValidator, wrapRequestHandler(logoutController))
+usersRouter.post(
+  '/refresh-token',
+  accessTokenValidator,
+  refreshTokenValidator,
+  wrapRequestHandler(refreshTokenController)
+)
 
 /**
  * description: verify email when user click on the link in email
