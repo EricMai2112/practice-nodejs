@@ -61,7 +61,7 @@ export default function Home() {
       <h1>HLS Streaming</h1>
       <MediaPlayer
         title="Sprite Fight"
-        src="http://localhost:4000/static/video-hls/DB6l4vugWksoxF88tfpmQ/master.m3u8"
+        src="http://localhost:4000/static/video-hls/dGElrT0HiU8xs5R7tYeo5/master.m3u8"
       >
         <MediaProvider />
         <DefaultVideoLayout

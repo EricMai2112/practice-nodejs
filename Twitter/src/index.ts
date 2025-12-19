@@ -15,7 +15,9 @@ const app = express()
 app.use(cors())
 const PORT = process.env.PORT || 4000
 
-databaseService.connect()
+databaseService.connect().then(() => {
+  databaseService.indexUser()
+})
 
 app.get('/', (req, res) => {
   res.send('hello world')
