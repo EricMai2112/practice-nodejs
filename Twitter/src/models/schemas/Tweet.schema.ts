@@ -59,7 +59,7 @@ export default class Tweet {
     this.mentions = mentions
     this.parent_id = parent_id
     this.type = type
-    this.updated_at = created_at || date
+    this.updated_at = updated_at || date
     this.user_id = user_id
     this.user_views = user_views
   }
