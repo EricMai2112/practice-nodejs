@@ -17,6 +17,9 @@ const PORT = process.env.PORT || 4000
 
 databaseService.connect().then(() => {
   databaseService.indexUser()
+  databaseService.indexRefreshTokens()
+  databaseService.indexVideoStatus()
+  databaseService.indexFollowers()
 })
 
 app.get('/', (req, res) => {
