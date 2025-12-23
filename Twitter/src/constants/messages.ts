@@ -75,7 +75,9 @@ export const TWEETS_MESSAGES = {
   HASHTAGS_MUST_BE_AN_ARRAY_OF_STRING: 'Hashtags must be an array of string',
   MENTIONS_MUST_BE_AN_ARRAY_OF_USER_ID: 'Mentions must be an array of user id',
   MEDIAS_MUST_BE_AN_ARRAY_MEDIA_OBJECT: 'Medias must be an array media object',
-  CREATE_SWEET_SUCCESS: 'Create tweet successfully'
+  CREATE_SWEET_SUCCESS: 'Create tweet successfully',
+  INVALID_TWEET_ID: 'Invalid tweet ID',
+  TWEET_NOT_FOUND: 'Tweet not found'
 } as const
 
 export const BOOKMARKS_MESSAGES = {
