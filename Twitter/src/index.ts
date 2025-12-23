@@ -9,6 +9,7 @@ import { UPLOAD_IMAGE_DIR, UPLOAD_VIDEO_DIR } from './constants/dir'
 import staticRouter from './routes/static.routes'
 import cors from 'cors'
 import tweetRoutes from './routes/tweets.routes'
+import bookmarkRoutes from './routes/bookmarks.routes'
 
 config()
 
@@ -35,6 +36,7 @@ app.use('/users', usersRouter)
 app.use('/medias', mediasRouter)
 app.use('/static', staticRouter)
 app.use('/tweets', tweetRoutes)
+app.use('/bookmarks', bookmarkRoutes)
 // app.use('/static/video', express.static(UPLOAD_VIDEO_DIR))
 // app.use('/static', express.static(UPLOAD_IMAGE_DIR))
 //Error Handler cho toàn app
