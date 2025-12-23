@@ -20,7 +20,6 @@ class BookmarkService {
       user_id: new ObjectId(user_id),
       tweet_id: new ObjectId(tweet_id)
     })
-
     return result
   }
 }
