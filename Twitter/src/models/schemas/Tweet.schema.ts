@@ -57,7 +57,7 @@ export default class Tweet {
     this.hashtags = hashtags
     this.medias = medias
     this.mentions = mentions.map(item => new ObjectId(item))
-    this.parent_id = parent_id ? new ObjectId() : null
+    this.parent_id = parent_id ? new ObjectId(parent_id) : null
     this.type = type
     this.updated_at = updated_at || date
     this.user_id = user_id
