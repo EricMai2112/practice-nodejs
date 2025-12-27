@@ -15,6 +15,7 @@ export const searchController = async (
   const user_id = req.decoded_authorization?.user_id as string
   const result = await searchService.search({
     content: req.query.content,
+    media_type: req.query.media_type,
     limit,
     page,
     user_id
