@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
 import { ParamsDictionary } from 'express-serve-static-core'
+import { TWEETS_MESSAGES } from '~/constants/messages'
 import { SearchQuery } from '~/models/requests/Search.requests'
+import { TokenPayload } from '~/models/requests/User.requests'
 import searchService from '~/services/search.services'
 
 export const searchController = async (
@@ -10,13 +12,20 @@ export const searchController = async (
 ) => {
   const limit = Number(req.query.limit)
   const page = Number(req.query.page)
+  const user_id = req.decoded_authorization?.user_id as string
   const result = await searchService.search({
     content: req.query.content,
     limit,
-    page
+    page,
+    user_id
   })
   res.json({
-    message: "Search successfully",
-    result
+    message: TWEETS_MESSAGES.SEARCH_SUCCESS,
+    result: {
+      tweets: result.tweets,
+      limit,
+      page,
+      total_page: Math.ceil(result.total / limit)
+    }
   })
 }

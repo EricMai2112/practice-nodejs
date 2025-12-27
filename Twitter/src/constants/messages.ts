@@ -80,7 +80,8 @@ export const TWEETS_MESSAGES = {
   TWEET_NOT_FOUND: 'Tweet not found',
   GET_TWEET_SUCCESS: 'Get tweet successfully',
   TWEET_IS_NOT_PUBLIC_FOR_EVERYONE: 'Tweet is not public for everyone',
-  GET_NEW_FEEDS_SUCCESS: 'Get new feed sccessfully'
+  GET_NEW_FEEDS_SUCCESS: 'Get new feed sccessfully',
+  SEARCH_SUCCESS: 'Search successfully'
 } as const
 
 export const BOOKMARKS_MESSAGES = {
