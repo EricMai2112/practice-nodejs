@@ -16,6 +16,7 @@ export const searchController = async (
   const result = await searchService.search({
     content: req.query.content,
     media_type: req.query.media_type,
+    people_follow: req.query.people_follow,
     limit,
     page,
     user_id
