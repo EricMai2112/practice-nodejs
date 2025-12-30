@@ -11,6 +11,7 @@ import { ErrorWithStatus } from '~/models/Errors'
 import httpStatus from '~/constants/httpStatus'
 import Follower from '~/models/schemas/Follower.schema'
 import axios from 'axios'
+import { sendVerifyEmail } from '~/utils/email'
 
 class UsersService {
   private signAccessToken({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
@@ -115,6 +116,14 @@ class UsersService {
     const { exp, iat } = await this.decodedRefreshToken(refresh_token)
     await databaseService.refreshTokens.insertOne(
       new RefreshToken({ user_id: new ObjectId(user_id), token: refresh_token, iat: iat, exp: exp })
+    )
+    await sendVerifyEmail(
+      payload.email,
+      'Twitter - Verify Your Email',
+      `
+      <h1>Verify your email</h1>
+      <p>Click <a href="${process.env.CLIENT_URL}/verify-email?token=${email_verify_token}">here</a> to verify your email</p>
+      `
     )
     return { access_token, refresh_token }
   }
