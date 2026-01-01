@@ -11,6 +11,7 @@ import tweetRoutes from './routes/tweets.routes'
 import bookmarkRoutes from './routes/bookmarks.routes'
 import likeRoutes from './routes/like.routes'
 import searchRouter from './routes/search.routes'
+import './utils/s3'
 
 config()
 
