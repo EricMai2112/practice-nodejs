@@ -16,31 +16,32 @@ const s3 = new S3({
 // s3.listBuckets({}).then((data) => {
 //   console.log(data)
 // })
-const file = fs.readFileSync(path.resolve('uploads/images/bnu3kvh2sd097b7hxw2160hpv.jpg'))
-const parallelUploads3 = new Upload({
-  client: s3,
-  params: { Bucket: 'eric-twitter-clone', Key: 'anh.jpg', Body: file, ContentType: 'image/jpeg' },
+// const file = fs.readFileSync(path.resolve('uploads/images/bnu3kvh2sd097b7hxw2160hpv.jpg'))
 
-  // optional tags
-  tags: [
-    /*...*/
-  ],
+export const uploadFileToS3 = ({
+  filename,
+  filepath,
+  contentType
+}: {
+  filename: string
+  filepath: string
+  contentType: string
+}) => {
+  const parallelUploads3 = new Upload({
+    client: s3,
+    params: { Bucket: 'eric-twitter-clone', Key: filename, Body: fs.readFileSync(filepath), ContentType: contentType },
+    // optional tags
+    tags: [
+      /*...*/
+    ],
+    queueSize: 4,
+    partSize: 1024 * 1024 * 5,
+    leavePartsOnError: false
+  })
+  return parallelUploads3.done()
+}
 
-  // additional optional fields show default values below:
-
-  // (optional) concurrency configuration
-  queueSize: 4,
-
-  // (optional) size of each part, in bytes, at least 5MB
-  partSize: 1024 * 1024 * 5,
-
-  // (optional) when true, do not automatically call AbortMultipartUpload when
-  // a multipart upload fails to complete. You should then manually handle
-  // the leftover parts.
-  leavePartsOnError: false
-})
-
-parallelUploads3.on('httpUploadProgress', (progress) => {
-  console.log(progress)
-})
-parallelUploads3.done().then((res) => console.log(res))
+// parallelUploads3.on('httpUploadProgress', (progress) => {
+//   console.log(progress)
+// })
+// parallelUploads3.done().then((res) => console.log(res))

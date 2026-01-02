@@ -3,7 +3,7 @@ import sharp from 'sharp'
 import { UPLOAD_IMAGE_DIR } from '~/constants/dir'
 import { getNameFromFullName, handleUploadImage, handleUploadVideo } from '~/utils/file'
 import path from 'path'
-import fs from 'fs'
+import fs from 'node:fs/promises'
 import fsPromise from 'fs/promises'
 import { isProduction } from '~/constants/config'
 import { config } from 'dotenv'
@@ -12,6 +12,8 @@ import { Media } from '~/models/Other'
 import { encodeHLSWithMultipleVideoStreams } from '~/utils/video'
 import databaseService from './database.services'
 import VideoStatus from '~/models/schemas/VideoStatus.schema'
+import { uploadFileToS3 } from '~/utils/s3'
+import mime from 'mime'
 config()
 
 class Queue {
@@ -104,16 +106,30 @@ class MediasService {
     const result: Media[] = await Promise.all(
       files.map(async (file) => {
         const newName = getNameFromFullName(file.newFilename)
-        const newPath = path.resolve(UPLOAD_IMAGE_DIR, `${newName}.jpg`)
-        await sharp(file.filepath).jpeg().toFile(newPath)
-        fs.unlinkSync(file.filepath)
+        const newFullFileName = `${newName}.jpg`
+        const newPath = path.resolve(UPLOAD_IMAGE_DIR, newFullFileName)
+        const buffer = await fs.readFile(file.filepath)
+        await sharp(buffer).jpeg().toFile(newPath)
+
+        const s3Result = await uploadFileToS3({
+          filename: newFullFileName,
+          filepath: newPath,
+          contentType: mime.getType(newPath) as string
+        })
+
+        await Promise.allSettled([fs.unlink(file.filepath), fs.unlink(newPath)])
 
         return {
-          url: isProduction
-            ? `${process.env.HOST}/static/image/${newName}.jpg`
-            : `http://localhost:${process.env.PORT}/static/image/${newName}.jpg`,
+          url: s3Result.Location as string,
           type: MediaType.Image
         }
+
+        // return {
+        //   url: isProduction
+        //     ? `${process.env.HOST}/static/image/${newFullFileName}`
+        //     : `http://localhost:${process.env.PORT}/static/image/${newFullFileName}`,
+        //   type: MediaType.Image
+        // }
       })
     )
     return result
