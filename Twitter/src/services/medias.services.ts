@@ -112,7 +112,7 @@ class MediasService {
         await sharp(buffer).jpeg().toFile(newPath)
 
         const s3Result = await uploadFileToS3({
-          filename: newFullFileName,
+          filename: 'images/' + newFullFileName,
           filepath: newPath,
           contentType: mime.getType(newPath) as string
         })
@@ -147,14 +147,26 @@ class MediasService {
     // }
 
     //return Array[]
-    const result = files.map((file) => {
-      return {
-        url: isProduction
-          ? `${process.env.HOST}/static/video-stream/${file.newFilename}`
-          : `http://localhost:${process.env.PORT}/static/video-stream/${file.newFilename}`,
-        type: MediaType.Video
-      }
-    })
+    const result: Media[] = await Promise.all(
+      files.map(async (file) => {
+        const s3Result = await uploadFileToS3({
+          filename: 'videos/' + file.newFilename,
+          filepath: file.filepath,
+          contentType: mime.getType(file.filepath) as string
+        })
+        await fs.unlink(file.filepath)
+        return {
+          url: s3Result.Location as string,
+          type: MediaType.Video
+        }
+        // return {
+        //   url: isProduction
+        //     ? `${process.env.HOST}/static/video-stream/${file.newFilename}`
+        //     : `http://localhost:${process.env.PORT}/static/video-stream/${file.newFilename}`,
+        //   type: MediaType.Video
+        // }
+      })
+    )
 
     return result
   }
