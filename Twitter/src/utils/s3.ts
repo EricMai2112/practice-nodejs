@@ -1,8 +1,10 @@
 import { S3 } from '@aws-sdk/client-s3'
 import { Upload } from '@aws-sdk/lib-storage'
 import { config } from 'dotenv'
+import { Response } from 'express'
 import fs from 'fs'
 import path from 'path'
+import httpStatus from '~/constants/httpStatus'
 
 config()
 
@@ -29,7 +31,12 @@ export const uploadFileToS3 = ({
 }) => {
   const parallelUploads3 = new Upload({
     client: s3,
-    params: { Bucket: 'eric-twitter-clone', Key: filename, Body: fs.readFileSync(filepath), ContentType: contentType },
+    params: {
+      Bucket: process.env.S3_BUCKET_NAME as string,
+      Key: filename,
+      Body: fs.readFileSync(filepath),
+      ContentType: contentType
+    },
     // optional tags
     tags: [
       /*...*/
@@ -39,6 +46,18 @@ export const uploadFileToS3 = ({
     leavePartsOnError: false
   })
   return parallelUploads3.done()
+}
+
+export const sendFindFromS3 = async (res: Response, filepath: string) => {
+  try {
+    const data = await s3.getObject({
+      Bucket: process.env.S3_BUCKET_NAME as string,
+      Key: filepath
+    })
+    ;(data.Body as any).pipe(res)
+  } catch (error) {
+    res.status(httpStatus.NOT_FOUND).send('Not found')
+  }
 }
 
 // parallelUploads3.on('httpUploadProgress', (progress) => {
