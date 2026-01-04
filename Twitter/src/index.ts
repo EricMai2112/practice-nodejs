@@ -12,10 +12,13 @@ import bookmarkRoutes from './routes/bookmarks.routes'
 import likeRoutes from './routes/like.routes'
 import searchRouter from './routes/search.routes'
 import './utils/s3'
+import { createServer } from 'http'
+import { Server } from 'socket.io'
 
 config()
 
 const app = express()
+const httpServer = createServer(app)
 app.use(cors())
 const PORT = process.env.PORT || 4000
 
@@ -47,6 +50,19 @@ app.use('/search', searchRouter)
 //Error Handler cho toàn app
 app.use(defaultErrorHandler)
 
-app.listen(PORT, () => {
+const io = new Server(httpServer, {
+  cors: {
+    origin: 'http://localhost:3000'
+  }
+})
+
+io.on('connection', (socket) => {
+  console.log(`user ${socket.id} connected`)
+  socket.on('disconnect', () => {
+    console.log(`user ${socket.id} disconnected`)
+  })
+})
+
+httpServer.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`)
 })
