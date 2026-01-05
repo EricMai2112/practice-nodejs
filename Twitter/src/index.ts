@@ -61,6 +61,9 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log(`user ${socket.id} disconnected`)
   })
+  socket.emit('hi', {
+    message: `Xin chao ${socket.id} da ket noi thanh cong`
+  })
 })
 
 httpServer.listen(PORT, () => {
