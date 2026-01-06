@@ -40,3 +40,25 @@
 .read-the-docs {
   color: #888;
 }
+
+.message-container {
+  display: flex;
+}
+
+.message {
+  max-width: 70%;
+  text-align: left;
+  background: aqua;
+  padding: 0.2em;
+  border-radius: 5px;
+  margin-bottom: 0.2em;
+}
+
+.message-right {
+  margin-left: auto;
+}
+
+.chat {
+  max-height: 200px;
+  overflow-y: scroll;
+}
