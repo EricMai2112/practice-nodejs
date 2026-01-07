@@ -1,6 +1,7 @@
 import { config } from 'dotenv'
 import { Collection, Db, MongoClient } from 'mongodb'
 import Bookmark from '~/models/schemas/Bookmark.schema'
+import Conversation from '~/models/schemas/Conversation.schema'
 import Follower from '~/models/schemas/Follower.schema'
 import Hashtag from '~/models/schemas/Hashtag.schema'
 import Like from '~/models/schemas/Like.schema'
@@ -65,8 +66,8 @@ class DatabaseService {
 
   async indexTweets() {
     const exists = await this.tweets.indexExists(['content_text'])
-    if(!exists){
-      this.tweets.createIndex({content: 'text'}, {default_language: 'none'})
+    if (!exists) {
+      this.tweets.createIndex({ content: 'text' }, { default_language: 'none' })
     }
   }
 
@@ -100,6 +101,10 @@ class DatabaseService {
 
   get likes(): Collection<Like> {
     return this.db.collection(process.env.DB_LIKES_COLLECTION as string)
+  }
+
+  get conversations(): Collection<Conversation> {
+    return this.db.collection(process.env.DB_CONVERSATIONS_COLLECTION as string)
   }
 }
 
