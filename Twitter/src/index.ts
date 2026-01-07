@@ -15,6 +15,8 @@ import './utils/s3'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
 import Conversation from './models/schemas/Conversation.schema'
+import conversationsRoute from './routes/conversation.routes'
+import { ObjectId } from 'mongodb'
 
 config()
 
@@ -46,6 +48,7 @@ app.use('/tweets', tweetRoutes)
 app.use('/bookmarks', bookmarkRoutes)
 app.use('/likes', likeRoutes)
 app.use('/search', searchRouter)
+app.use('/conversations', conversationsRoute)
 // app.use('/static/video', express.static(UPLOAD_VIDEO_DIR))
 // app.use('/static', express.static(UPLOAD_IMAGE_DIR))
 //Error Handler cho toàn app
@@ -71,8 +74,8 @@ io.on('connection', (socket) => {
 
     await databaseService.conversations.insertOne(
       new Conversation({
-        sender_id: data.from,
-        receiver_id: data.to,
+        sender_id: new ObjectId(data.from),
+        receiver_id: new ObjectId(data.to),
         content: data.content
       })
     )
