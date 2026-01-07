@@ -1,10 +1,32 @@
 import React, { useEffect, useState } from "react";
 import socket from "./socket";
+import axios from "axios";
 
 export default function Chat() {
   const profile = JSON.parse(localStorage.getItem("profile")) || {};
+  const usernames = [
+    {
+      name: "user1",
+      value: "user694bb63f48b5edc8a42035c0",
+    },
+    {
+      name: "user2",
+      value: "user6954afe18c44e5499b57faa5",
+    },
+  ];
+  const [receiver, setReceiver] = useState("");
   const [value, setValue] = useState("");
   const [messages, setMessages] = useState([]);
+
+  const getProfile = (username) => {
+    axios
+      .get(`/users/${username}`, { baseURL: import.meta.env.VITE_API_URL })
+      .then((res) => {
+        setReceiver(res.data.user._id);
+        alert(`Now you can chat with ${res.data.user.name}`)
+      });
+  };
+
   useEffect(() => {
     socket.auth = {
       _id: profile._id,
@@ -31,7 +53,7 @@ export default function Chat() {
 
     socket.emit("private message", {
       content: value,
-      to: "6954afe18c44e5499b57faa5", //user_id
+      to: receiver, //user_id
     });
 
     setMessages((messages) => [
@@ -45,13 +67,20 @@ export default function Chat() {
   return (
     <div>
       <h1>Chat</h1>
+      <div>
+        {usernames.map((username) => (
+          <div key={username.name}>
+            <button onClick={() => getProfile(username.value)}>{username.name}</button>
+          </div>
+        ))}
+      </div>
       <div className="chat">
         {messages.map((message, index) => (
           <div key={index}>
             <div className="message-container">
               <div
                 className={
-                  `message` + (message.isSender ? "message-right" : "")
+                  `message ` + (message.isSender ? "message-right" : "")
                 }
               >
                 {message.content}
