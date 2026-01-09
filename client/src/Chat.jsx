@@ -35,18 +35,9 @@ export default function Chat() {
   };
 
   useEffect(() => {
-    socket.auth = {
-      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-    };
-    socket.connect();
     socket.on("receive_message", (data) => {
       const { payload } = data;
-      setConversations((prev) => {
-        if (prev.some((m) => m._id === payload._id)) {
-          return prev; // đã có → không thêm
-        }
-        return [...prev, payload];
-      });
+      setConversations((conversations) => [...conversations, payload]);
     });
     socket.on("connect_error", (err) => {
       console.log(err.data);
