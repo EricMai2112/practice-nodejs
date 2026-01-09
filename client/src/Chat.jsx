@@ -36,18 +36,26 @@ export default function Chat() {
 
   useEffect(() => {
     socket.auth = {
-      _id: profile._id,
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
     };
     socket.connect();
     socket.on("receive_message", (data) => {
       const { payload } = data;
-      setConversations((message) => [...message, payload]);
+      setConversations((prev) => {
+        if (prev.some((m) => m._id === payload._id)) {
+          return prev; // đã có → không thêm
+        }
+        return [...prev, payload];
+      });
+    });
+    socket.on("connect_error", (err) => {
+      console.log(err.data);
     });
     //cleanup function to disconnect
     return () => {
       socket.disconnect();
     };
-  }, [profile._id]);
+  }, []);
 
   useEffect(() => {
     if (receiver) {
