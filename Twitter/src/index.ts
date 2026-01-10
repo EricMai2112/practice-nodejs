@@ -20,6 +20,7 @@ import YAML from 'yaml'
 // import path from 'path'
 import swaggerUi from 'swagger-ui-express'
 import swaggerJsdoc from 'swagger-jsdoc'
+import helmet from 'helmet'
 
 // const file = fs.readFileSync(path.resolve('twitter-swagger.yaml'), 'utf8')
 
@@ -43,6 +44,7 @@ config()
 
 const app = express()
 const httpServer = createServer(app)
+app.use(helmet())
 app.use(cors())
 const PORT = process.env.PORT || 4000
 
