@@ -2,6 +2,39 @@ import { JwtPayload } from 'jsonwebtoken'
 import { TokenType, UserVerifyStatus } from '~/constants/enums'
 import { ParamsDictionary } from 'express-serve-static-core'
 
+/**
+ * @swagger
+ * /users/login:
+ *   post:
+ *     tags:
+ *       - users
+ *     summary: Login to website
+ *     description: Login to website
+ *     operationId: login
+ *     requestBody:
+ *       required: true
+ *       description: login information
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/LoginBody'
+ *     responses:
+ *       200:
+ *         description: Login Successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Login successfully
+ *                 result:
+ *                   $ref: '#/components/schemas/SuccessAuthentication'
+ *       400:
+ *         description: Invalid input
+ */
+
 export interface RegisterReqBody {
   name: string
   email: string

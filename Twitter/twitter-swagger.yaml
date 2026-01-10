@@ -1,0 +1,158 @@
+openapi: 3.0.4
+info:
+  title: Swagger Petstore - OpenAPI 3.0
+  description: |-
+    This is a sample Pet Store Server based on the OpenAPI 3.0 specification.  You can find out more about
+    Swagger at [https://swagger.io](https://swagger.io). In the third iteration of the pet store, we've switched to the design first approach!
+    You can now help us improve the API whether it's by making changes to the definition itself or to the code.
+    That way, with time, we can improve the API in general, and expose some of the new features in OAS3.
+
+    Some useful links:
+    - [The Pet Store repository](https://github.com/swagger-api/swagger-petstore)
+    - [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
+  termsOfService: https://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.12
+externalDocs:
+  description: Find out more about Swagger
+  url: https://swagger.io
+servers:
+  - url: http://localhost:4000
+tags:
+  - name: users
+    description: API related to user
+paths:
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: Login to website
+      description: Login to website
+      operationId: login
+      requestBody:
+        description: login information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginBody'
+        required: true
+      responses:
+        '200':
+          description: Login Successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Login successfully
+                  result:
+                    $ref: '#/components/schemas/SuccessAuthentication'
+        '400':
+          description: Invalid input
+  /users/me:
+    get:
+      tags:
+        - users
+      summary: Get user information
+      description: Get user information
+      operationId: getMe
+      responses:
+        default:
+          description: Get user successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      security:
+        - BearerAuth: []
+
+components:
+  schemas:
+    LoginBody:
+      type: object
+      properties:
+        email:
+          type: string
+          example: mait58674@gmail.com
+        password:
+          type: string
+          example: Eric123@
+    SuccessAuthentication:
+      type: object
+      properties:
+        access_token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk0YmI2M2Y0OGI1ZWRjOGE0MjAzNWMwIiwidG9rZW5fdHlwZSI6MCwidmVyaWZ5IjoxLCJpYXQiOjE3NjgwMjEzOTQsImV4cCI6MTc2ODEwNzc5NH0.clDi6_0VE3p4UYcriktdnVKToNR2IfN83SQ5mv0FdOY
+        refresh_token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk0YmI2M2Y0OGI1ZWRjOGE0MjAzNWMwIiwidG9rZW5fdHlwZSI6MSwidmVyaWZ5IjoxLCJpYXQiOjE3NjgwMjEzOTQsImV4cCI6MTc3NjY2MTM5NH0.cjdw1gh9b9caCztG-JBXkqbjGny9_g0rIEycbu6kJt8
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: MongoId
+          example: '694bb63f48b5edc8a42035c0'
+        name:
+          type: string
+          example: 'ericmai'
+        email:
+          type: string
+          format: email
+          example: 'mait58674@gmail.com'
+        date_of_birth:
+          type: string
+          format: date-time
+          example: '2004-12-21T07:56:01.354Z'
+        created_at:
+          type: string
+          format: date-time
+          example: '2025-12-24T09:45:35.574Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2025-12-24T09:45:52.625Z'
+        verify:
+          $ref: '#/components/schemas/UserVerifyStatus'
+        twitter_circle:
+          type: array
+          description: List of user IDs in Twitter Circle
+          items:
+            type: string
+            format: MongoId
+            example: '694bb7a0cfecf4e8d41ee579'
+        bio:
+          type: string
+          example: ''
+        location:
+          type: string
+          example: ''
+        website:
+          type: string
+          example: ''
+        username:
+          type: string
+          example: ['user694bb63f48b5edc8a42035c0']
+        avatar:
+          type: string
+          description: URL of avatar image
+          example: ''
+        cover_photo:
+          type: string
+          description: URL of cover photo
+          example: ''
+    UserVerifyStatus:
+      type: number
+      enum: [Unverified, Verified, Banned]
+      example: 1
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

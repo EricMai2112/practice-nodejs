@@ -38,6 +38,99 @@ import { wrapRequestHandler } from '~/utils/handlers'
 
 const usersRouter = Router()
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     LoginBody:
+ *       type: object
+ *       properties:
+ *         email:
+ *           type: string
+ *           format: email
+ *           example: mait58674@gmail.com
+ *         password:
+ *           type: string
+ *           example: Eric123@
+ *
+ *     SuccessAuthentication:
+ *       type: object
+ *       properties:
+ *         access_token:
+ *           type: string
+ *           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *         refresh_token:
+ *           type: string
+ *           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *
+ *     User:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *           description: MongoDB ObjectId
+ *           example: 694bb63f48b5edc8a42035c0
+ *         name:
+ *           type: string
+ *           example: ericmai
+ *         email:
+ *           type: string
+ *           format: email
+ *           example: mait58674@gmail.com
+ *         date_of_birth:
+ *           type: string
+ *           format: date-time
+ *           example: 2004-12-21T07:56:01.354Z
+ *         created_at:
+ *           type: string
+ *           format: date-time
+ *           example: 2025-12-24T09:45:35.574Z
+ *         updated_at:
+ *           type: string
+ *           format: date-time
+ *           example: 2025-12-24T09:45:52.625Z
+ *         verify:
+ *           $ref: '#/components/schemas/UserVerifyStatus'
+ *         twitter_circle:
+ *           type: array
+ *           description: List of user IDs in Twitter Circle
+ *           items:
+ *             type: string
+ *             example: 694bb7a0cfecf4e8d41ee579
+ *         bio:
+ *           type: string
+ *           example: ""
+ *         location:
+ *           type: string
+ *           example: ""
+ *         website:
+ *           type: string
+ *           example: ""
+ *         username:
+ *           type: string
+ *           example: user694bb63f48b5edc8a42035c0
+ *         avatar:
+ *           type: string
+ *           description: URL of avatar image
+ *           example: ""
+ *         cover_photo:
+ *           type: string
+ *           description: URL of cover photo
+ *           example: ""
+ *
+ *     UserVerifyStatus:
+ *       type: integer
+ *       enum: [0, 1, 2]
+ *       description: 0 = Unverified, 1 = Verified, 2 = Banned
+ *       example: 1
+ *
+ *   securitySchemes:
+ *     BearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ */
+
 usersRouter.post('/login', loginValidator, wrapRequestHandler(loginController))
 
 /**
