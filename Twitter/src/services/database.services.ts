@@ -1,4 +1,4 @@
-import { config } from 'dotenv'
+import '~/constants/config'
 import { Collection, Db, MongoClient } from 'mongodb'
 import Bookmark from '~/models/schemas/Bookmark.schema'
 import Conversation from '~/models/schemas/Conversation.schema'
@@ -10,7 +10,6 @@ import Tweet from '~/models/schemas/Tweet.schema'
 import User from '~/models/schemas/User.schema'
 import VideoStatus from '~/models/schemas/VideoStatus.schema'
 
-config()
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.dvz1yko.mongodb.net/?appName=Cluster0`
 
 class DatabaseService {
